@@ -11,8 +11,8 @@ The underlying command which `xpm` uses to configure the X device wrapper `xinpu
 So why not just run this command directly? 2 reasons.  
 
 1. `xinput --set-prop ...`  requires, as part of its command, an identifier for the target device.  
-To get it means running and manually interpreting the output of `xinput --list` to get the identifier, then running a command to set your desired properties.  
-The is addtionally complicated when you have a combo keyboard/mouse USB device which actually exposes 2 X input devices under the same identifier.
+To get this identifier means running and manually interpreting the output of `xinput --list`, then running a command to set your desired properties.  
+The is additionally complicated when you have a combo keyboard/mouse USB device which actually exposes 2 X input devices under the same identifier.
 2. On top of that, this identifier changes when:
 
 * The system is rebooted
