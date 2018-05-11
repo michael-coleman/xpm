@@ -54,9 +54,11 @@ function _xpm_print_status_message() {
 
     echo Your pointer devices:
     echo 
-    # for dev in ${xpm_devices[@]}
-    for dev in $xpm_devices
+
+    for dev in "${xpm_devices[@]}"
     do
+        # test if device is connected before id is extracted because it makes
+        # no sense to try get the id of a non-existent device
         if _xpm_is_device_connected $dev
         then
             id=$(_xpm_get_device_id "$dev")
