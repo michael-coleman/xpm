@@ -6,7 +6,7 @@
 source $(dirname ${(%):-%N})/config.zsh
 
 # note this function expects data on STDIN
-function _xpm_get_id_out_of_xinput_device_list() {
+function _xpm_match_id_from_device_list() {
     
     grep -i "${1}.*pointer"  |  # match the line only if it contains pointer. 
                                 # This handles the case for USB Keyboard mouse
@@ -22,7 +22,7 @@ function _xpm_get_device_id() {
 
     id=$( 
         xinput --list  |  
-            _xpm_get_id_out_of_xinput_device_list $dev_name   
+            _xpm_match_id_from_device_list $dev_name   
     )
 
     if [[ -n $id ]]
