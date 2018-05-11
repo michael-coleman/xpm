@@ -5,25 +5,18 @@
 
 source $(dirname ${(%):-%N})/config.zsh
 
-# note this function expects data on STDIN
-function _xpm_get_id_out_of_xinput_device_list() {
-    
-    grep -i "${1}.*pointer"  |  # match the line only if it contains pointer. 
-                                # This handles the case for USB Keyboard mouse
-                                # combo's where the name refers to the combo,
-                                # and the name appears twice in xinput's output
+function _xpm_match_id_from_device_list() {
+    local dev_name=${1}
 
-       grep -P --only '(?<=id=)[0-9]+'
+    xinput list | 
+        grep -i "${dev_name}.*pointer"  | grep -P --only '(?<=id=)[0-9]+'
 }
 
 function _xpm_get_device_id() {
 
     local dev_name=${1:?[error] dev_name not given}
 
-    id=$( 
-        xinput --list  |  
-            _xpm_get_id_out_of_xinput_device_list $dev_name   
-    )
+    id=$( _xpm_match_id_from_device_list $dev_name )
 
     if [[ -n $id ]]
     then
@@ -33,7 +26,26 @@ function _xpm_get_device_id() {
     fi
 }
 
+function _xpm_is_device_connected() {
+    local dev_name="$1"
+    xinput list | grep $dev_name > /dev/null 2>&1
+    return $?
+}
+
+function _xpm_get_info_on_device() {
+    local id=${1:?[error] id not given}
+    echo "ID=$id"
+    
+    xinput list-props $id |
+        grep "Device Accel Constant Deceleration"
+    
+    xinput get-feedbacks $id
+    echo
+}
+
 function _xpm_print_status_message() {
+
+    local id
 
     echo pointer devices loaded into X
     echo -----------------------------
@@ -42,13 +54,20 @@ function _xpm_print_status_message() {
 
     echo Your pointer devices:
     echo 
-    # for dev in ${xpm_devices[@]}
-    for dev in $xpm_devices
+
+    for dev in "${xpm_devices[@]}"
     do
-        echo "Device: $dev"
-        xinput list-props $( _xpm_get_device_id "$dev" ) |
-            grep "Device Accel Constant Deceleration"
-        echo
+        # test if device is connected before id is extracted because it makes
+        # no sense to try get the id of a non-existent device
+        if _xpm_is_device_connected $dev
+        then
+            id=$(_xpm_get_device_id "$dev")
+            echo `tput smso`"[$dev]"`tput rmso`
+            _xpm_get_info_on_device $id
+        else
+            echo `tput smso`"[$dev]`tput rmso` doesn't seem to be connected"
+            echo
+        fi
     done
 
     cat <<- EOF
