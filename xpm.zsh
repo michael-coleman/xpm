@@ -46,7 +46,7 @@ function _xpm_print_status_message() {
     do
         if _xpm_is_device_connected $dev
         then
-        echo "Device: $dev"
+            echo `tput smso`"[$dev]"`tput rmso`
         xinput list-props $( _xpm_get_device_id "$dev" ) |
             grep "Device Accel Constant Deceleration"
         echo
