@@ -39,3 +39,4 @@ create a file: `config.zsh` in the `xpm` directory with contents something like:
 
 
 Then source `~/.zsh/xpm/xpm.zsh` from your `~/.zshrc`. you should now have a command/function: `xpm_status`
+
