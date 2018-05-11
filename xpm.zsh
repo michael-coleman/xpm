@@ -32,7 +32,17 @@ function _xpm_is_device_connected() {
     return $?
 }
 
+function _xpm_get_info_on_device() {
+    local id=${1:?[error] id not given}
+    
+    xinput list-props $id |
+        grep "Device Accel Constant Deceleration"
+    
+}
+
 function _xpm_print_status_message() {
+
+    local id
 
     echo pointer devices loaded into X
     echo -----------------------------
@@ -46,10 +56,9 @@ function _xpm_print_status_message() {
     do
         if _xpm_is_device_connected $dev
         then
+            id=$(_xpm_get_device_id "$dev")
             echo `tput smso`"[$dev]"`tput rmso`
-        xinput list-props $( _xpm_get_device_id "$dev" ) |
-            grep "Device Accel Constant Deceleration"
-        echo
+            _xpm_get_info_on_device $id
         else
             echo `tput smso`"[$dev]`tput rmso` doesn't seem to be connected"
             echo
