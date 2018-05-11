@@ -7,8 +7,8 @@ source $(dirname ${(%):-%N})/config.zsh
 
 # note this function expects data on STDIN
 function _xpm_match_id_from_device_list() {
-    
-    grep -i "${1}.*pointer"  |  # match the line only if it contains pointer. 
+    local dev_name=${1}
+    grep -i "${dev_name}.*pointer"  |  # match the line only if it contains pointer. 
                                 # This handles the case for USB Keyboard mouse
                                 # combo's where the name refers to the combo,
                                 # and the name appears twice in xinput's output
