@@ -51,10 +51,11 @@ function _xpm_print_status_message() {
         echo
     done
 
-    cat <<- 'EOF'
-	you can set your device with something like:
+    cat <<- EOF
+	you can set properties with something like:
 	
-	    xinput set-prop <id> "Device Accel Constant Deceleration" 5.0
+	    xinput set-prop `tput smso`id`tput rmso` "Device Accel Constant Deceleration" `tput smso`threshold`tput rmso` 
+	    xinput set-ptr-feedback `tput smso`id`tput rmso` `tput smso`threshold`tput rmso` `tput smso`numerator`tput rmso` `tput smso`denominator`tput rmso` 
 	
 	EOF
 
