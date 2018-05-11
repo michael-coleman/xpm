@@ -34,10 +34,13 @@ function _xpm_is_device_connected() {
 
 function _xpm_get_info_on_device() {
     local id=${1:?[error] id not given}
+    echo "ID=$id"
     
     xinput list-props $id |
         grep "Device Accel Constant Deceleration"
     
+    xinput get-feedbacks $id
+    echo
 }
 
 function _xpm_print_status_message() {
