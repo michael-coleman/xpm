@@ -5,25 +5,18 @@
 
 source $(dirname ${(%):-%N})/config.zsh
 
-# note this function expects data on STDIN
 function _xpm_match_id_from_device_list() {
     local dev_name=${1}
-    grep -i "${dev_name}.*pointer"  |  # match the line only if it contains pointer. 
-                                # This handles the case for USB Keyboard mouse
-                                # combo's where the name refers to the combo,
-                                # and the name appears twice in xinput's output
 
-       grep -P --only '(?<=id=)[0-9]+'
+    xinput list | 
+        grep -i "${dev_name}.*pointer"  | grep -P --only '(?<=id=)[0-9]+'
 }
 
 function _xpm_get_device_id() {
 
     local dev_name=${1:?[error] dev_name not given}
 
-    id=$( 
-        xinput --list  |  
-            _xpm_match_id_from_device_list $dev_name   
-    )
+    id=$( _xpm_match_id_from_device_list $dev_name )
 
     if [[ -n $id ]]
     then
