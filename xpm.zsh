@@ -47,14 +47,6 @@ function _xpm_print_status_message() {
 
     local id
 
-    echo pointer devices loaded into X
-    echo -----------------------------
-    xinput --list | grep pointer
-    echo
-
-    echo Your pointer devices:
-    echo 
-
     for dev in "${xpm_devices[@]}"
     do
         # test if device is connected before id is extracted because it makes
