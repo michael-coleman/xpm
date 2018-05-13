@@ -32,12 +32,20 @@ function _xpm_is_device_connected() {
     return $?
 }
 
+function _xpm_print_const_decel() {
+    local id=$1
+
+    xinput list-props $id                          |
+        grep "Device Accel Constant Deceleration"  |
+        sed -n 's/^\s\+//p'       # strip whitespace start of line
+}
+
 function _xpm_get_info_on_device() {
     local id=${1:?[error] id not given}
     echo "ID=$id"
-    
-    xinput list-props $id |
-        grep "Device Accel Constant Deceleration"
+
+    _xpm_print_const_decel "$id"
+
     
     xinput get-feedbacks $id
     echo
