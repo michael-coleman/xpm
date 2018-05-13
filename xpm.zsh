@@ -71,10 +71,10 @@ function _xpm_print_status_message() {
         if _xpm_is_device_connected $dev
         then
             id=$(_xpm_get_device_id "$dev")
-            echo `tput smso`"[$dev]"`tput rmso`
+            echo `tput bold`"[$dev]"`tput sgr0`
             _xpm_get_info_on_device $id
         else
-            echo `tput smso`"[$dev]`tput rmso` doesn't seem to be connected"
+            echo `tput bold`"[$dev]`tput sgr0` doesn't seem to be connected"
             echo
         fi
     done
