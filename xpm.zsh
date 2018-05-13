@@ -40,14 +40,23 @@ function _xpm_print_const_decel() {
         sed -n 's/^\s\+//p'       # strip whitespace start of line
 }
 
+function _xpm_print_ptr_feedbacks() {
+    local id=$1
+
+    xinput get-feedbacks $id     |
+        sed -n '/accelNum/,+2{
+            s/^\s\+//p
+        }'                       |
+        column -t
+}
+
 function _xpm_get_info_on_device() {
     local id=${1:?[error] id not given}
     echo "ID=$id"
 
     _xpm_print_const_decel "$id"
 
-    
-    xinput get-feedbacks $id
+    _xpm_print_ptr_feedbacks "$id"
     echo
 }
 
